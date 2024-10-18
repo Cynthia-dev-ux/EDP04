@@ -1,3 +1,5 @@
+data Arbol a = ArbolVacio | Raiz a (Arbol a) (Arbol a) deriving Show
+
 longitud :: Arbol a -> Int
 longitud = 
 
