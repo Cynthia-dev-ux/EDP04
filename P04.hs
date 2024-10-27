@@ -1,4 +1,5 @@
-import GHC.Exts.Heap (GenClosure(prof))
+{-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
+{-# HLINT ignore "Use guards" #-}
 data Arbol a = ArbolVacio | Raiz a (Arbol a) (Arbol a) deriving Show
 
 longitud :: Arbol a -> Int
@@ -14,14 +15,19 @@ ancho ArbolVacio = 0
 ancho (Raiz a ArbolVacio ArbolVacio) = 1
 ancho (Raiz a arbi arbd) = ancho arbi + ancho arbd
 
---recorrido :: Arbol a -> Recorrido -> [a]
---recorrido =
+data Recorrido = InOrder | PreOrder | PostOrder
+recorrido :: Arbol a -> Recorrido -> [a]
+recorrido ArbolVacio _ = []
+recorrido (Raiz a arbi arbd) InOrder =  recorrido arbi InOrder ++ [a] ++ recorrido arbd InOrder
+recorrido (Raiz a arbi arbd) PreOrder = [a] ++ recorrido arbi PreOrder ++ recorrido arbd PreOrder
+recorrido (Raiz a arbi arbd) PostOrder =  recorrido arbi PostOrder ++ recorrido arbd PostOrder ++ [a]
+
 
 niveles :: Arbol a -> [[a]]
 niveles ArbolVacio = []
 niveles (Raiz raiz ArbolVacio  ArbolVacio) = [[raiz]]
 --niveles (Raiz raiz arbolIzquierdo  arbolDerecho) = [raiz]
-                                                                        
+                                                                          
 
 minimo :: Arbol a -> a
 minimo ArbolVacio = error "Está vacio, no hay minimos"
