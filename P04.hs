@@ -1,25 +1,32 @@
 data Arbol a = ArbolVacio | Raiz a (Arbol a) (Arbol a) deriving Show
 
-longitud :: Arbol a -> Int
-longitud = 
+--longitud :: Arbol a -> Int
+--longitud = 
 
-profundidad :: Arbol a-> Int
-profundidad =
+--profundidad :: Arbol a-> Int
+--profundidad =
 
-ancho :: Arbol a-> Int
-ancho =
+--ancho :: Arbol a-> Int
+--ancho =
 
-recorrido :: Arbol a -> Recorrido -> [a]
-recorrido =
+--recorrido :: Arbol a -> Recorrido -> [a]
+--recorrido =
 
 niveles :: Arbol a -> [[a]]
-niveles =
+niveles ArbolVacio = []
+niveles (Raiz raiz ArbolVacio  ArbolVacio) = [[raiz]]
+--niveles (Raiz raiz arbolIzquierdo  arbolDerecho) = [raiz]
+                                                                        
 
-minimo :: ARbol a -> a
-minimo =
+minimo :: Arbol a -> a
+minimo ArbolVacio = error "Está vacio, no hay minimos"
+minimo (Raiz a ArbolVacio _) = a 
+minimo (Raiz a arbolIzquierdo _) = minimo arbolIzquierdo
 
 maximo :: Arbol a -> a 
-maximo =
+maximo  ArbolVacio = error  "Está vacío, no hya máximos"
+maximo (Raiz a _ ArbolVacio) = a
+maximo (Raiz a _ arbolDerecho) = maximo arbolDerecho
 
-eliminar :: Ord a => Arbol a -> a -> Arbol a
-eliminar = 
+--eliminar :: Ord a => Arbol a -> a -> Arbol a
+--eliminar = 
