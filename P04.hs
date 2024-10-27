@@ -1,13 +1,18 @@
+import GHC.Exts.Heap (GenClosure(prof))
 data Arbol a = ArbolVacio | Raiz a (Arbol a) (Arbol a) deriving Show
 
---longitud :: Arbol a -> Int
---longitud = 
+longitud :: Arbol a -> Int
+longitud ArbolVacio = 0 
+longitud (Raiz a arbi arbd) = 1 + longitud arbi + longitud arbd  
 
---profundidad :: Arbol a-> Int
---profundidad =
+profundidad :: Arbol a-> Int
+profundidad ArbolVacio = 0
+profundidad (Raiz a arbi arbd) = 1 + max(profundidad arbi) (profundidad arbd)
 
---ancho :: Arbol a-> Int
---ancho =
+ancho :: Arbol a-> Int
+ancho ArbolVacio = 0
+ancho (Raiz a ArbolVacio ArbolVacio) = 1
+ancho (Raiz a arbi arbd) = ancho arbi + ancho arbd
 
 --recorrido :: Arbol a -> Recorrido -> [a]
 --recorrido =
