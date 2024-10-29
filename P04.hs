@@ -46,8 +46,8 @@ eliminar (Raiz x ArbolVacio arbolDerecho) elemento = if x == elemento
 eliminar (Raiz x arbolIzquierdo ArbolVacio) elemento = if x == elemento
                                                        then arbolIzquierdo
                                                        else error "No está en el árbol"
-eliminar (Raiz x arbolIzquierdo arbolDerecho) elemento = if elemento x
+eliminar (Raiz x arbolIzquierdo arbolDerecho) elemento = if elemento > x
                                                           then(Raiz x(eliminar arbolIzquierdo elemento) arbolDerecho)
-                                                          else if elemento x
-                                                                then (Raiz x arbolIzquierdo (eliminar arbolDerecho elemento))
+                                                          else if elemento > x
+                                                                then (Raiz x (eliminar arbolDerecho elemento) arbolIzquierdo) 
                                               
