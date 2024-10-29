@@ -1,5 +1,4 @@
-{-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
-{-# HLINT ignore "Use guards" #-}
+
 data Arbol a = ArbolVacio | Raiz a (Arbol a) (Arbol a) deriving Show
 
 longitud :: Arbol a -> Int
@@ -26,7 +25,7 @@ recorrido (Raiz a arbi arbd) PostOrder =  recorrido arbi PostOrder ++ recorrido 
 niveles :: Arbol a -> [[a]]
 niveles ArbolVacio = []
 niveles (Raiz raiz ArbolVacio  ArbolVacio) = [[raiz]]
---niveles (Raiz raiz arbolIzquierdo  arbolDerecho) = [raiz]
+niveles (Raiz raiz arbolIzquierdo  arbolDerecho) = [raiz]
                                                                           
 
 minimo :: Arbol a -> a
@@ -35,9 +34,20 @@ minimo (Raiz a ArbolVacio _) = a
 minimo (Raiz a arbolIzquierdo _) = minimo arbolIzquierdo
 
 maximo :: Arbol a -> a 
-maximo  ArbolVacio = error  "Está vacío, no hya máximos"
+maximo  ArbolVacio = error  "Está vacío, no hay máximos"
 maximo (Raiz a _ ArbolVacio) = a
 maximo (Raiz a _ arbolDerecho) = maximo arbolDerecho
 
---eliminar :: Ord a => Arbol a -> a -> Arbol a
---eliminar = 
+eliminar :: Ord a => Arbol a -> a -> Arbol a
+eliminar ArbolVacio elemento = error "Está vacío"
+eliminar (Raiz x ArbolVacio arbolDerecho) elemento = if x == elemento
+                                                    then arbolDerecho
+                                                    else error "No está en el arbol"
+eliminar (Raiz x arbolIzquierdo ArbolVacio) elemento = if x == elemento
+                                                       then arbolIzquierdo
+                                                       else error "No está en el árbol"
+eliminar (Raiz x arbolIzquierdo arbolDerecho) elemento = if elemento x
+                                                          then(Raiz x(eliminar arbolIzquierdo elemento) arbolDerecho)
+                                                          else if elemento x
+                                                                then (Raiz x arbolIzquierdo (eliminar arbolDerecho elemento))
+                                              
