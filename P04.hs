@@ -24,8 +24,8 @@ recorrido (Raiz a arbi arbd) PostOrder =  recorrido arbi PostOrder ++ recorrido 
 
 niveles :: Arbol a -> [[a]]
 niveles ArbolVacio = []
-niveles (Raiz raiz ArbolVacio  ArbolVacio) = [[raiz]]
-niveles (Raiz raiz arbolIzquierdo  arbolDerecho) = [raiz]
+niveles (Raiz a ArbolVacio  ArbolVacio) = [[a]]
+niveles (Raiz a arbolIzquierdo  arbolDerecho) = [[a]] ++ niveles (arbolIzquierdo) ++ niveles (arbolDerecho)
                                                                           
 
 minimo :: Arbol a -> a
@@ -49,5 +49,5 @@ eliminar (Raiz x arbolIzquierdo ArbolVacio) elemento = if x == elemento
 eliminar (Raiz x arbolIzquierdo arbolDerecho) elemento = if elemento > x
                                                           then(Raiz x(eliminar arbolIzquierdo elemento) arbolDerecho)
                                                           else if elemento > x
-                                                                then (Raiz x (eliminar arbolDerecho elemento) arbolIzquierdo) 
+                                                          then (Raiz x (eliminar arbolDerecho elemento) arbolIzquierdo)       
                                               
