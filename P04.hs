@@ -25,18 +25,24 @@ recorrido (Raiz a arbi arbd) PostOrder =  recorrido arbi PostOrder ++ recorrido 
 niveles :: Arbol a -> [[a]]
 niveles ArbolVacio = []
 niveles (Raiz a ArbolVacio  ArbolVacio) = [[a]]
-niveles (Raiz a arbolIzquierdo  arbolDerecho) = [[a]] ++ niveles (arbolIzquierdo) ++ niveles (arbolDerecho)
+niveles (Raiz a arbolIzquierdo  arbolDerecho) = [a] 
+                                                   : combinarNiveles(niveles arbolIzquierdo)
+                                                                   (niveles arbolDerecho)
                                                                           
+combinarNiveles :: [[a]] -> [[a]] -> [[a]]
+combinarNiveles [] ys = ys
+combinarNiveles xs [] = xs
+combinarNiveles (x:xs) (y:ys) = (x++y) : combinarNiveles xs ys
 
 minimo :: Arbol a -> a
 minimo ArbolVacio = error "Está vacio, no hay minimos"
-minimo (Raiz a ArbolVacio _) = a 
-minimo (Raiz a arbolIzquierdo _) = minimo arbolIzquierdo
+minimo (Raiz a _ ArbolVacio) = a 
+minimo (Raiz _ _ arbolIzquierdo) = minimo arbolIzquierdo
 
 maximo :: Arbol a -> a 
 maximo  ArbolVacio = error  "Está vacío, no hay máximos"
-maximo (Raiz a _ ArbolVacio) = a
-maximo (Raiz a _ arbolDerecho) = maximo arbolDerecho
+maximo (Raiz a ArbolVacio _) = a
+maximo (Raiz _  arbolDerecho _) = maximo arbolDerecho
 
 eliminar :: Ord a => Arbol a -> a -> Arbol a
 eliminar ArbolVacio elemento = error "Está vacío"
@@ -46,8 +52,10 @@ eliminar (Raiz x ArbolVacio arbolDerecho) elemento = if x == elemento
 eliminar (Raiz x arbolIzquierdo ArbolVacio) elemento = if x == elemento
                                                        then arbolIzquierdo
                                                        else error "No está en el árbol"
-eliminar (Raiz x arbolIzquierdo arbolDerecho) elemento = if elemento > x
-                                                          then(Raiz x(eliminar arbolIzquierdo elemento) arbolDerecho)
+eliminar (Raiz x arbolIzquierdo arbolDerecho) elemento = if elemento < x
+                                                         then(Raiz x(eliminar arbolIzquierdo elemento) arbolDerecho)
                                                           else if elemento > x
                                                           then (Raiz x (eliminar arbolDerecho elemento) arbolIzquierdo)       
+                                                          else error "Caso no evalulado"
+
                                               
