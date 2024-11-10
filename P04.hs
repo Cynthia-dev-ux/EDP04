@@ -37,16 +37,35 @@ combinarNiveles (x:xs) (y:ys) = (x++y) : combinarNiveles xs ys
 minimo :: (Ord a) => Arbol a -> a
 minimo ArbolVacio = error "Está vacío, no hay mínimos"
 minimo (Raiz a ArbolVacio ArbolVacio) = a
-minimo (Raiz a ArbolVacio arbolDerecho) = min a (minimo arbolDerecho)
-minimo (Raiz a arbolIzquierdo ArbolVacio) = min a (minimo arbolIzquierdo)
-minimo (Raiz a arbolIzquierdo arbolDerecho) = min a (min (minimo arbolIzquierdo) (minimo arbolDerecho))
+minimo (Raiz a ArbolVacio arbolDerecho) = if a < (minimo arbolDerecho)
+                                          then a
+                                          else minimo arbolDerecho
+minimo (Raiz a arbolIzquierdo ArbolVacio) = if a < (minimo arbolIzquierdo)
+                                            then a
+                                            else minimo arbolIzquierdo
+minimo (Raiz a arbolIzquierdo arbolDerecho) = if a < (minimo arbolIzquierdo) && a < (minimo arbolDerecho)
+                                              then a
+                                              else if (minimo arbolIzquierdo) < a && (minimo arbolDerecho) > minimo arbolIzquierdo
+                                                then minimo arbolIzquierdo
+                                                else minimo arbolDerecho
+
+
 
 maximo :: (Ord a) => Arbol a -> a
 maximo ArbolVacio = error "Está vacío, no hay maximos"
 maximo (Raiz a ArbolVacio ArbolVacio) = a
-maximo (Raiz a ArbolVacio arbolDerecho) = max a (minimo arbolDerecho)
-maximo (Raiz a arbolIzquierdo ArbolVacio) = max a (minimo arbolIzquierdo)
-maximo (Raiz a arbolIzquierdo arbolDerecho) = max a (max (minimo arbolIzquierdo) (minimo arbolDerecho))
+maximo (Raiz a ArbolVacio arbolDerecho) = if a > (maximo arbolDerecho)
+                                          then a
+                                          else maximo arbolDerecho
+maximo (Raiz a arbolIzquierdo ArbolVacio) = if a > (maximo arbolIzquierdo)
+                                            then a 
+                                            else maximo arbolIzquierdo
+maximo (Raiz a arbolIzquierdo arbolDerecho) = if a > (maximo arbolIzquierdo) && a > (maximo arbolDerecho)
+                                             then a
+                                             else if (maximo arbolIzquierdo) > a && (maximo arbolIzquierdo) > (maximo arbolDerecho)
+                                                then maximo arbolIzquierdo
+                                                else maximo arbolDerecho
+
 
 --Intente reducir los casos base pero no me dejaba evaluar un arbol con uno vacío, me decía que tenia que agregar un (Eq) pero mejor lo deje con casos bases, espero no haya problema
 
@@ -62,6 +81,10 @@ eliminar (Raiz x arbolIzquierdo arbolDerecho) elemento = if elemento < x
                                                          then(Raiz x(eliminar arbolIzquierdo elemento) arbolDerecho)
                                                           else if elemento > x
                                                           then (Raiz x (eliminar arbolDerecho elemento) arbolIzquierdo)       
-                                                          else error "Caso no evalulado"
+                                                          else  
+                                                            let maximoValor = maximo arbolIzquierdo
+                                                            in Raiz maximoValor (eliminar arbolIzquierdo maximoValor) arbolDerecho
+
+
 
                                               
