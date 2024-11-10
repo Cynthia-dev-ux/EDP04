@@ -34,17 +34,21 @@ combinarNiveles [] ys = ys
 combinarNiveles xs [] = xs
 combinarNiveles (x:xs) (y:ys) = (x++y) : combinarNiveles xs ys
 
-minimo :: Arbol a -> a
-minimo ArbolVacio = error "Está vacio, no hay minimos"
-minimo (Raiz a _ ArbolVacio) = a 
-minimo (Raiz _ _ arbolIzquierdo) = minimo arbolIzquierdo
+minimo :: (Ord a) => Arbol a -> a
+minimo ArbolVacio = error "Está vacío, no hay mínimos"
+minimo (Raiz a ArbolVacio ArbolVacio) = a
+minimo (Raiz a ArbolVacio arbolDerecho) = min a (minimo arbolDerecho)
+minimo (Raiz a arbolIzquierdo ArbolVacio) = min a (minimo arbolIzquierdo)
+minimo (Raiz a arbolIzquierdo arbolDerecho) = min a (min (minimo arbolIzquierdo) (minimo arbolDerecho))
 
+maximo :: (Ord a) => Arbol a -> a
+maximo ArbolVacio = error "Está vacío, no hay maximos"
+maximo (Raiz a ArbolVacio ArbolVacio) = a
+maximo (Raiz a ArbolVacio arbolDerecho) = max a (minimo arbolDerecho)
+maximo (Raiz a arbolIzquierdo ArbolVacio) = max a (minimo arbolIzquierdo)
+maximo (Raiz a arbolIzquierdo arbolDerecho) = max a (max (minimo arbolIzquierdo) (minimo arbolDerecho))
 
-maximo :: Arbol a -> a 
-maximo  ArbolVacio = error  "Está vacío, no hay máximos"
-maximo (Raiz a ArbolVacio _) = a
-maximo (Raiz _  arbolDerecho _) = maximo arbolDerecho
-
+--Intente reducir los casos base pero no me dejaba evaluar un arbol con uno vacío, me decía que tenia que agregar un (Eq) pero mejor lo deje con casos bases, espero no haya problema
 
 eliminar :: Ord a => Arbol a -> a -> Arbol a
 eliminar ArbolVacio elemento = error "Está vacío"
