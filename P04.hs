@@ -39,10 +39,12 @@ minimo ArbolVacio = error "Está vacio, no hay minimos"
 minimo (Raiz a _ ArbolVacio) = a 
 minimo (Raiz _ _ arbolIzquierdo) = minimo arbolIzquierdo
 
+
 maximo :: Arbol a -> a 
 maximo  ArbolVacio = error  "Está vacío, no hay máximos"
 maximo (Raiz a ArbolVacio _) = a
 maximo (Raiz _  arbolDerecho _) = maximo arbolDerecho
+
 
 eliminar :: Ord a => Arbol a -> a -> Arbol a
 eliminar ArbolVacio elemento = error "Está vacío"
