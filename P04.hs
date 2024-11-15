@@ -47,23 +47,21 @@ maximo (Raiz a _  ArbolVacio) = a
 maximo (Raiz a _  arbolDerecho) = maximo arbolDerecho
 
 
---Intente reducir los casos base pero no me dejaba evaluar un arbol con uno vacío, me decía que tenia que agregar un (Eq) pero mejor lo deje con casos bases, espero no haya problema
 
 eliminar :: Ord a => Arbol a -> a -> Arbol a
 eliminar ArbolVacio elemento = error "Está vacío"
 eliminar (Raiz x ArbolVacio arbolDerecho) elemento = if x == elemento
                                                     then arbolDerecho
-                                                    else error "No está en el arbol"
+                                                    else  eliminar arbolDerecho elemento
 eliminar (Raiz x arbolIzquierdo ArbolVacio) elemento = if x == elemento
                                                        then arbolIzquierdo
-                                                       else error "No está en el árbol"
+                                                       else  eliminar arbolIzquierdo elemento
 eliminar (Raiz x arbolIzquierdo arbolDerecho) elemento = if elemento < x
                                                          then(Raiz x(eliminar arbolIzquierdo elemento) arbolDerecho)
                                                           else if elemento > x
                                                           then (Raiz x (eliminar arbolDerecho elemento) arbolIzquierdo)       
-                                                          else  
-                                                            let maximoValor = maximo arbolIzquierdo
-                                                            in Raiz maximoValor (eliminar arbolIzquierdo maximoValor) arbolDerecho
+                                                          else (Raiz (minimo arbolDerecho) arbolIzquierdo(eliminar arbolDerecho(minimo arbolDerecho)))
+                                                          
 
 
 
